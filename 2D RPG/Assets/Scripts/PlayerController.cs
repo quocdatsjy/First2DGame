@@ -4,14 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NewBehaviourScript : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
+    public bool FacingLeft
+    {
+        get => facingLeft;
+
+        set => facingLeft = value;
+    }
     [SerializeField] private float moveSpeed = 1f;
     private PlayerControls playerControls;
     private Vector2 movement;
     private Rigidbody2D rb;
     private Animator myAnimator;
     private SpriteRenderer mySpriteRenderer;
+    
+    private bool facingLeft = false;
 
     private void Awake()
     {
@@ -58,10 +66,12 @@ public class NewBehaviourScript : MonoBehaviour
         if (mousePos.x < playerScreenPoint.x)
         {
             mySpriteRenderer.flipX = true;
+            FacingLeft = true;
         }
         else
         {
             mySpriteRenderer.flipX = false;
+            FacingLeft = false;
         }
     }
 }
