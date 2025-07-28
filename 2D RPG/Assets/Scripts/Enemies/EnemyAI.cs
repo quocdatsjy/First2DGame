@@ -10,13 +10,13 @@ public class EnemyAI : MonoBehaviour
         Roaming
     }
 
-    private State state;
-    private EnemyPathfinding enemyPathfinding;
+    private State _state;
+    private EnemyPathfinding _enemyPathfinding;
 
     private void Awake()
     {
-        enemyPathfinding = GetComponent<EnemyPathfinding>();
-        state = State.Roaming;
+        _enemyPathfinding = GetComponent<EnemyPathfinding>();
+        _state = State.Roaming;
     }
 
     private void Start()
@@ -26,10 +26,10 @@ public class EnemyAI : MonoBehaviour
     
     private IEnumerator RoamingRoutine()
     {
-        while (state == State.Roaming)
+        while (_state == State.Roaming)
         {
             Vector2 roamPosition = GetRoamingPosition();
-            enemyPathfinding.MoveTo(roamPosition);
+            _enemyPathfinding.MoveTo(roamPosition);
             yield return new WaitForSeconds(2f); // Wait for 2 seconds before moving to a new position
         }
     }

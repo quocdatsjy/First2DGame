@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] private int startingHealth = 3;
+    [SerializeField] private GameObject deathVFXPrefab;
+    
     private int _currentHealth;
     private Knockback _knockback;
     private Flash _flash;
@@ -31,6 +33,7 @@ public class EnemyHealth : MonoBehaviour
     {
         if (_currentHealth <= 0)
         {
+            Instantiate(deathVFXPrefab, transform.position, Quaternion.identity);
             Die();
         }
     }
