@@ -10,11 +10,24 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance;
 
     [SerializeField] private float moveSpeed = 1f;
+    [SerializeField] private float dashSpeed = 4f;
+    [SerializeField] private TrailRenderer myTrailRenderer;
+    
     private PlayerControls _playerControls;
     private Vector2 _movement;
     private Rigidbody2D _rb;
     private Animator _myAnimator;
     private SpriteRenderer _mySpriteRenderer;
+    private float _startingMoveSpeed;
+    
+    private bool _isDashing = false;
+
+    private void Start()
+    {
+        _playerControls.Combat.Dash.performed += ctx => Dash();
+        
+        _startingMoveSpeed = moveSpeed;
+    }
 
     private void Awake()
     {
@@ -69,5 +82,27 @@ public class PlayerController : MonoBehaviour
             _mySpriteRenderer.flipX = false;
             FacingLeft = false;
         }
+    }
+    
+    private void Dash()
+    {
+        if (_isDashing) return;
+
+        _isDashing = true;
+        moveSpeed *= dashSpeed;
+        myTrailRenderer.emitting = true;
+
+        StartCoroutine(EndDashRoutine());
+    }
+
+    private IEnumerator EndDashRoutine()
+    {
+        float dashTime = 0.2f;
+        float dashCD = 0.25f;
+        yield return new WaitForSeconds(dashTime);
+        moveSpeed = _startingMoveSpeed; // Reset move speed after dash
+        myTrailRenderer.emitting = false;
+        yield return new WaitForSeconds(dashCD);
+        _isDashing = false;
     }
 }
